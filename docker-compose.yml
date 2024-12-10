@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  ubuntu:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: ubuntu_vm
+    volumes:
+      - ./workspace:/workspace
+    ports:
+      - "2222:22"
+    env_file:
+      - .env
+    tty: true
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
